@@ -16,8 +16,7 @@ import org.springframework.stereotype.Component;
 public class Send implements RabbitTemplate.ConfirmCallback {  
   
     private RabbitTemplate rabbitTemplate;  
-    public Send() {
-    }
+  
     /**  
      * 依賴注入  
      */  

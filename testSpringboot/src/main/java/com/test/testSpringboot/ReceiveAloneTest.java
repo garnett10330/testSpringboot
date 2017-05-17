@@ -35,8 +35,8 @@ public class ReceiveAloneTest {
   public static void main(String[] args) throws IOException, TimeoutException, ShutdownSignalException,  
                                         ConsumerCancelledException, InterruptedException {  
       ConnectionFactory facotry = new ConnectionFactory();  
-      facotry.setUsername("guest");  
-      facotry.setPassword("guest");  
+      facotry.setUsername("test");  
+      facotry.setPassword("test");  
       facotry.setVirtualHost("/");  
       facotry.setHost("localhost");  
       facotry.setPort(5672);

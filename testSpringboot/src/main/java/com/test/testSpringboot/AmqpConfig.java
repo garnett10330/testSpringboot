@@ -22,16 +22,16 @@ import com.rabbitmq.client.Channel;
 public class AmqpConfig {
 	public static final String EXCHANGE   = "spring-boot-exchange";  
     public static final String ROUTINGKEY = "spring-boot-routingKey";  
-  
+    public static final String QUEUENAME = "spring-boot-queue0517";
     @Bean  
     public ConnectionFactory connectionFactory() {  
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();  
        // connectionFactory.setAddresses("127.0.0.1:15672");  
         connectionFactory.setHost("localhost");
         connectionFactory.setPort(5672);
-        connectionFactory.setUsername("guest");  
-        connectionFactory.setPassword("guest ");  
-        //connectionFactory.setVirtualHost("/");  
+        connectionFactory.setUsername("wei");  
+        connectionFactory.setPassword("wei");  
+        connectionFactory.setVirtualHost("/");  
         connectionFactory.setPublisherConfirms(true); //必須要設置 才能進行消息的回調。
         return connectionFactory;  
     }  
@@ -61,7 +61,7 @@ public class AmqpConfig {
   
     @Bean  
     public Queue queue() {  
-        return new Queue("spring-boot-queue0517", true); //隊列持久  
+        return new Queue(QUEUENAME, true); //隊列持久  
   
     }  
     /*
@@ -71,12 +71,16 @@ public class AmqpConfig {
     public Binding binding() {  
         return BindingBuilder.bind(queue()).to(defaultExchange()).with(AmqpConfig.ROUTINGKEY);  
     }  
-  
+    @Bean
+    MessageListenerAdapter listenerAdapter(Receiver receiver) {
+        return new MessageListenerAdapter(receiver, "receiveMessage");
+    }
     @Bean  
     public SimpleMessageListenerContainer messageContainer() {  
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory());  
         container.setQueues(queue());  
         container.setExposeListenerChannel(true);  // 添加队列信息
+        container.setQueueNames(QUEUENAME);
         container.setMaxConcurrentConsumers(1);  
         container.setConcurrentConsumers(1);  // 设置并发消费者数量，默认情况为1
         container.setAutoDeclare(false);
@@ -85,6 +89,7 @@ public class AmqpConfig {
                      手动模式，消费者客户端显示编码确认消息消费完成，Broker给生产者发送回调，消息删除
          */
         container.setAcknowledgeMode(AcknowledgeMode.MANUAL); //设置确认模式手工确认  
+        //container.setMessageListener(listenerAdapter);
         container.setMessageListener(new ChannelAwareMessageListener() {  
   
             @Override  

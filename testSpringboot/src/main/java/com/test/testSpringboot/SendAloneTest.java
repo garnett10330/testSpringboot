@@ -21,16 +21,16 @@ import com.rabbitmq.client.MessageProperties;
  */  
 public class SendAloneTest {  
     public final static String EXCHANGE_NAME = "test-exchange";  
-    @Autowired
-    private  Send send;
+
+ 
     public static void main(String[] args) throws IOException, TimeoutException, InterruptedException {  
         /**  
          * 配置amqp broker 連接信息
          */  
         ConnectionFactory facotry = new ConnectionFactory();  
         
-        facotry.setUsername("guest");  
-        facotry.setPassword("guest");  
+        facotry.setUsername("test");  
+        facotry.setPassword("test");  
         facotry.setVirtualHost("/");  
         facotry.setPort(5672);
         facotry.setHost("localhost");  
