@@ -28,7 +28,7 @@ public class SendAloneTest {
          * 配置amqp broker 連接信息
          */  
         ConnectionFactory facotry = new ConnectionFactory();  
-        //不知為何寫了會錯QQ
+        
         facotry.setUsername("guest");  
         facotry.setPassword("guest");  
         facotry.setVirtualHost("/");  

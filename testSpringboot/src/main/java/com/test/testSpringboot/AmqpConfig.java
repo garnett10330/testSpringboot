@@ -10,7 +10,9 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;  
 import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;  
 import org.springframework.amqp.rabbit.core.RabbitTemplate;  
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;  
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;  
 import org.springframework.context.annotation.Bean;  
 import org.springframework.context.annotation.Configuration;  
@@ -27,9 +29,9 @@ public class AmqpConfig {
        // connectionFactory.setAddresses("127.0.0.1:15672");  
         connectionFactory.setHost("localhost");
         connectionFactory.setPort(5672);
-        connectionFactory.setUsername("test");  
-        connectionFactory.setPassword("test");  
-        connectionFactory.setVirtualHost("/");  
+        connectionFactory.setUsername("guest");  
+        connectionFactory.setPassword("guest ");  
+        //connectionFactory.setVirtualHost("/");  
         connectionFactory.setPublisherConfirms(true); //必須要設置 才能進行消息的回調。
         return connectionFactory;  
     }  
@@ -39,6 +41,7 @@ public class AmqpConfig {
     //必須是prototype類型 
     public RabbitTemplate rabbitTemplate() {  
         RabbitTemplate template = new RabbitTemplate(connectionFactory());  
+        template.setMessageConverter(new Jackson2JsonMessageConverter());
         return template;  
     }  
   
@@ -58,7 +61,7 @@ public class AmqpConfig {
   
     @Bean  
     public Queue queue() {  
-        return new Queue("spring-boot-queue", true); //隊列持久  
+        return new Queue("spring-boot-queue0517", true); //隊列持久  
   
     }  
     /*
@@ -76,6 +79,7 @@ public class AmqpConfig {
         container.setExposeListenerChannel(true);  // 添加队列信息
         container.setMaxConcurrentConsumers(1);  
         container.setConcurrentConsumers(1);  // 设置并发消费者数量，默认情况为1
+        container.setAutoDeclare(false);
         /*设置消费者成功消费消息后确认模式，分为两种
                      自动模式，默认模式，在RabbitMQ Broker消息发送到消费者后自动删除
                      手动模式，消费者客户端显示编码确认消息消费完成，Broker给生产者发送回调，消息删除
