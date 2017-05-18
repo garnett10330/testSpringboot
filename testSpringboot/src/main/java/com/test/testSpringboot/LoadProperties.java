@@ -2,11 +2,15 @@ package com.test.testSpringboot;
 
 import java.io.IOException;
 import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 @Component
 public class LoadProperties {
+	private Logger logger = LoggerFactory.getLogger(AmqpConfig.class);
 	 public String getFilePropertie(String propertie,String file) {
 	    String returnPropertie = null;
 	    Properties prop = new Properties();

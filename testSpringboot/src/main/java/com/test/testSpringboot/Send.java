@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;  
   
 /**  
- * 消息生产者  
+ * 消息生產者  
  *   
  *  
  */  
@@ -29,7 +29,7 @@ public class Send implements RabbitTemplate.ConfirmCallback {
     @Autowired  
     public Send(RabbitTemplate rabbitTemplate) {  
         this.rabbitTemplate = rabbitTemplate;  
-        rabbitTemplate.setConfirmCallback(this); //rabbitTemplate如果為單例的話，那回調就是最後設置的內容
+        //rabbitTemplate.setConfirmCallback(this); //rabbitTemplate如果為單例的話，那回調就是最後設置的內容
     }  
   
     public void sendMsg(String content) {  
