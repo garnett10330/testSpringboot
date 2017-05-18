@@ -14,7 +14,13 @@ import org.springframework.stereotype.Component;
  */  
 @Component  
 public class Send implements RabbitTemplate.ConfirmCallback {  
-  
+	/*
+     * RabbitTemplate 是 spring 幫我們的一個封裝，
+     * 我們使用該對象提供的方法即可發送消息。
+     * 默認情況下 RabbitTemplate 連接本機的 5672 端口的 rabbitmq，
+     * 如果需要連接其他地方，
+     * 那麼我們可以自己重寫 RabbitTemplate 的生成，再注入使用即可。
+     * */
     private RabbitTemplate rabbitTemplate;  
   
     /**  
@@ -43,7 +49,7 @@ public class Send implements RabbitTemplate.ConfirmCallback {
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {  
         System.out.println(" 回調id:" + correlationData);  
         if (ack) {  
-            System.out.println("消息成功消費");  
+            System.out.println("消息成功接收");  
         } else {  
             System.out.println("消息消費失敗:" + cause);  
         }  
